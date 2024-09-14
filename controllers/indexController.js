@@ -1,10 +1,9 @@
-// controllers/indexController.js
-const pool = require("../config/db");
+const postsController = require("./postsController");
 
 exports.index = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM users");
-    res.render("index", { title: "social", data: result.rows });
+    const posts = await postsController.getPosts();
+    res.render("index", { title: "social", data: posts || [] });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

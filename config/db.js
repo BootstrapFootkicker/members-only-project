@@ -34,7 +34,6 @@ const createDatabaseTables = async () => {
   try {
     await client.query("BEGIN");
 
-
     const createUsersTableQuery = `
       CREATE TABLE IF NOT EXISTS users (
         userid SERIAL PRIMARY KEY,
@@ -55,7 +54,6 @@ const createDatabaseTables = async () => {
       )`;
     await client.query(createPostsTableQuery);
 
-
     await client.query("COMMIT");
     console.log("Tables created successfully");
   } catch (err) {
@@ -67,7 +65,39 @@ const createDatabaseTables = async () => {
 };
 
 const populateDB = async () => {
-  // Populate the database with sample data
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    const insertUsersQuery = `
+      INSERT INTO users (username, email, password)
+      VALUES 
+        ('user1', 'user1@example.com', 'password1'),
+        ('user2', 'user2@example.com', 'password2'),
+        ('user3', 'user3@example.com', 'password3')
+      RETURNING userid
+    `;
+    const usersResult = await client.query(insertUsersQuery);
+
+    const userIds = usersResult.rows.map((row) => row.userid);
+
+    const insertPostsQuery = `
+      INSERT INTO posts (userid, title, content)
+      VALUES 
+        (${userIds[0]}, 'Post Title 1', 'Content for post 1'),
+        (${userIds[1]}, 'Post Title 2', 'Content for post 2'),
+        (${userIds[2]}, 'Post Title 3', 'Content for post 3')
+    `;
+    await client.query(insertPostsQuery);
+
+    await client.query("COMMIT");
+    console.log("Database populated with sample data");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Error populating database", err);
+  } finally {
+    client.release();
+  }
 };
 
 const initDB = async () => {
