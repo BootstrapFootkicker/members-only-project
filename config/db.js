@@ -1,6 +1,22 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
+//todo create login page
+//todo create way to add posts
+//todo create way to view posts
+//todo create way to delete posts
+//todo create way to update posts
+//todo create way to view users
+//todo create way to delete users
+//todo create way to update users
+//todo create way to view user posts
+//todo add way login (passport.js)
+//todo add way to logout
+//todo only show names of users who created post on login
+//todo encrypt passwords
+//todo create passcode for membership status
+//todo add admin status to allow for deleting and updating posts
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
