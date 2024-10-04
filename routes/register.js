@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  registerController.register(req, res);
+  registerController.addUserToDb(req, res);
 });
 
 module.exports = router;
