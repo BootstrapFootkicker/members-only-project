@@ -1,7 +1,6 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
-//todo create login page
 //todo create way to add posts
 //todo create way to view posts
 //todo create way to delete posts
