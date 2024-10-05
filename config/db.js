@@ -12,7 +12,6 @@ require("dotenv").config();
 //todo add way login (passport.js)
 //todo add way to logout
 //todo only show names of users who created post on login
-//todo encrypt passwords
 //todo create passcode for membership status
 //todo add admin status to allow for deleting and updating posts
 
