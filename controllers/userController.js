@@ -10,6 +10,17 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.getUserByName = async (username) => {
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+    return result.rows[0]; // Assuming you want a single user object
+  } catch (err) {
+    console.error("Database query error:", err);
+    throw err;
+  }
+};
 exports.getUserByUserId = async (req, res) => {
   try {
     const result = await pool.query(

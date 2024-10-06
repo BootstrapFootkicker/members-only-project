@@ -1,14 +1,30 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+const usersController = require("./controllers/userController");
+const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
+
+const initializePassport = require("./config/passport-config");
+
+initializePassport(passport, async (username) => {
+  console.log("username", await usersController.getUserByName(username));
+  return await usersController.getUserByName(username);
+});
 
 const app = express();
 
@@ -21,6 +37,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

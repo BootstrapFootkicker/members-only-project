@@ -8,9 +8,12 @@
     <title>Login Page</title>
 </head>
 <body>
-<form>
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username">
+<% if(messages.error) { %>
+    <%= messages.error %>
+<% } %>
+<form method="POST" action="/login">
+    <label for="userName">Username</label>
+    <input type="text" id="userName" name="userName">
     <label for="password">Password</label>
     <input type="password" id="password" name="password">
     <button type="submit">Login</button>
