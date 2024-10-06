@@ -21,16 +21,27 @@ exports.getUserByName = async (username) => {
     throw err;
   }
 };
-exports.getUserByUserId = async (req, res) => {
+
+exports.getUserId = async (userName) => {
   try {
     const result = await pool.query(
-      "SELECT userName FROM users WHERE userId = $1",
-      [req.params.userId],
+      "SELECT userid FROM users WHERE username = $1",
+      [userName],
     );
     return result.rows;
   } catch (err) {
     console.error("Database query error:", err);
-    res.status(500).send("Server Error");
+  }
+};
+exports.getUserByUserId = async (id) => {
+  try {
+    const result = await pool.query(
+      "SELECT userName FROM users WHERE userid = $1",
+      [id],
+    );
+    return result.rows[0]; // Assuming you want a single user object
+  } catch (err) {
+    console.error("Database query error:", err);
   }
 };
 

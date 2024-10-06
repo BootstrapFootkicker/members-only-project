@@ -21,10 +21,11 @@ const loginRouter = require("./routes/login");
 
 const initializePassport = require("./config/passport-config");
 
-initializePassport(passport, async (username) => {
-  console.log("username", await usersController.getUserByName(username));
-  return await usersController.getUserByName(username);
-});
+initializePassport(
+  passport,
+  usersController.getUserByName,
+  usersController.getUserByUserId,
+);
 
 const app = express();
 
