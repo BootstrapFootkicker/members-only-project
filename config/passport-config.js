@@ -28,8 +28,25 @@ function initialize(passport, getUserByName, getUserByUserId) {
   passport.use(
     new LocalStrategy({ usernameField: "userName" }, authenticateUser),
   );
-  passport.serializeUser((user, done) => done(null, user.userid));
-  passport.deserializeUser((id, done) => done(null, getUserByUserId(id)));
+
+  passport.serializeUser((user, done) => {
+    console.log("Serializing user:", user);
+    //refers to database objects
+    done(null, { id: user.userid, userName: user.username });
+  });
+
+  passport.deserializeUser((sessionData, done) => {
+    console.log("Deserializing session data:", sessionData);
+    getUserByUserId(sessionData.id)
+      .then((user) => {
+        if (user) {
+          //refers variable outside of database
+          user.userName = sessionData.userName;
+        }
+        done(null, user);
+      })
+      .catch((err) => done(err));
+  });
 }
 
 module.exports = initialize;
