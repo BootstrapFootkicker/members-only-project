@@ -12,12 +12,15 @@ const usersController = require("./controllers/userController");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
+const methodOverride = require("method-override");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
+const logoutRouter = require("./routes/logout");
+const adminPageRouter = require("./routes/adminPage");
 
 const initializePassport = require("./config/passport-config");
 
@@ -49,13 +52,15 @@ app.use(
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodOverride("_method"));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
-
+app.use("/logout", logoutRouter);
+app.use("/adminPage", adminPageRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

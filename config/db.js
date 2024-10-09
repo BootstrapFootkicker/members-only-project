@@ -9,10 +9,6 @@ require("dotenv").config();
 //todo create way to delete users
 //todo create way to update users
 //todo create way to view user posts
-//todo add way login (passport.js)
-//todo add way to logout
-//todo only show names of users who created post on login
-//todo create passcode for membership status
 //todo add admin status to allow for deleting and updating posts
 
 const pool = new Pool({
@@ -54,7 +50,8 @@ const createDatabaseTables = async () => {
         username VARCHAR(255) NOT NULL UNIQUE,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        isAdmin BOOLEAN DEFAULT FALSE
       )`;
     await client.query(createUsersTableQuery);
 

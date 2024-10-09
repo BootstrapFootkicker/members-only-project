@@ -6,19 +6,29 @@
   </head>
   <body>
     <header>
-      <h1>hello <%=name%></h1>
+      <h1>hello <%= name %></h1>
+
       <h1>Members Only</h1>
       <div class="links">
         <a href="/">Home</a>
         <a href="/register">Register</a>
-        <a href="/login">Login</a>
+        <a href="/adminPage">Admin</a>
+        <% if (name !=="Guest") { %>
+             <form action="/logout?_method=DELETE" method="post">
+        <button type="submit">Logout</button>
+      </form>
+        <% } else { %>
+          <a href="/login">Login</a>
+        <% } %>
       </div>
     </header>
     <div class="messages">
       <% data.forEach(function(post) { %>
         <div class="message">
+          <% if (isAdmin) { %>
           <h1><%= post.username %></h1>
-          <span><%= post.created_at %></span>
+        <span><%= post.created_at %></span>
+        <% } %>
           <p><%= post.content %></p>
         </div>
       <% }); %>

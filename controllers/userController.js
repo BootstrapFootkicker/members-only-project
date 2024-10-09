@@ -45,4 +45,25 @@ exports.getUserByUserId = async (id) => {
   }
 };
 
+exports.addAdminStatus = async (userName) => {
+  try {
+    await pool.query("UPDATE users SET isAdmin = true WHERE username = $1", [
+      userName,
+    ]);
+  } catch (err) {
+    console.error("Database query error:", err);
+  }
+};
+
+exports.isAdmin = async (userName) => {
+  try {
+    const result = await pool.query(
+      "SELECT isadmin FROM users WHERE username = $1",
+      [userName],
+    );
+    return result.rows[0].isadmin;
+  } catch (err) {
+    console.error("Database query error:", err);
+  }
+};
 module.exports = exports;
