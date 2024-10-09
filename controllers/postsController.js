@@ -13,4 +13,17 @@ exports.getPosts = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.addPost = async (title, content, userId) => {
+  try {
+    await pool.query(
+      `INSERT INTO posts (title, content, userId) 
+         VALUES ($1, $2, $3)`,
+      [title, content, userId],
+    );
+    console.log("Post added");
+  } catch (err) {
+    console.error("Database query error:", err);
+  }
+};
 module.exports = exports;

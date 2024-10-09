@@ -6,10 +6,12 @@ exports.index = async (req, res) => {
     const posts = await postsController.getPosts();
     console.log("Session data:", req.session);
     const userName = req.isAuthenticated() ? req.user.userName : "Guest";
-    let isAdmin = false;
-    if (await userController.isAdmin(userName)) {
-      isAdmin = true;
+    let isAdmin = false; // Default to false
+
+    if (req.isAuthenticated()) {
+      isAdmin = await userController.isAdmin(userName);
     }
+
     console.log("Is Admin:", isAdmin);
     console.log("User name:", userName);
     res.render("index", {
